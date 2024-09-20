@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela de Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="login-container" id="form-container">
+        <h2 id="form-title">Login</h2>
+        <form id="auth-form" aria-labelledby="form-title">
+            <div class="input-group">
+                <label for="username">Usuário:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Senha:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="button" id="toggle-password" aria-label="Mostrar senha">Ver senha</button>
+            </div>
+            <div class="input-group">
+                <input type="checkbox" id="remember-me">
+                <label for="remember-me">Lembrar-me</label>
+            </div>
+            <div class="button-group">
+                <button type="submit" id="submit-button">Entrar</button>
+                <button type="button" id="toggle-button">Registrar</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="info-container" style="display: none;">
+        <h1>A VENDA</h1>
+        <section>
+            <h2>Sobre o Complexo Roleplay</h2>
+            <p>Bem-vindo ao Complexo Roleplay, o seu servidor de roleplay preferido! Oferecemos um ambiente imersivo e emocionante onde você pode criar e viver suas próprias histórias. Nossa comunidade é ativa e amigável, pronta para proporcionar uma experiência única para todos os jogadores.</p>
+        </section>
+
+        <section>
+            <h2>Serviços e Recursos</h2>
+            <p>No Complexo Roleplay, você pode aproveitar uma ampla gama de recursos, incluindo:</p>
+            <ul>
+                <li>Ambientes detalhados e realistas</li>
+                <li>Eventos e missões exclusivas</li>
+                <li>Personagens e histórias envolventes</li>
+                <li>Suporte ativo e dedicado</li>
+                <li>Nossa cidade 100% focada no roleplay</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Contato</h2>
+            <p>Para mais informações ou para tirar suas dúvidas, entre em contato conosco através do e-mail: contato@complexoroleplay.com ou pelo telefone: (11) 9876-5432.</p>
+                    <div class="links-section">
+            <a href="https://discord.gg/seulinkdiscord" target="_blank">ENTRAR NO DISCORD<
+a>
+            <a href="https://example.com/baixar-apk" target="_blank">ABAIXAR APK</a>
+            <a href="https://example.com/baixar-data" target="_blank">ABAIXAR DATA</a>
+           
+    <footer>
+        <p>&copy; 2024 Complexo Roleplay. Todos os direitos reservados.</p>
+    </footer>
+    
+        <button class="back-button" id="back-to-info">Voltar para Login</button>
+    </div>
+
+
+    <script>
+        const formContainer = document.getElementById('form-container');
+        const formTitle = document.getElementById('form-title');
+        const authForm = document.getElementById('auth-form');
+        const toggleButton = document.getElementById('toggle-button');
+        const submitButton = document.getElementById('submit-button');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const rememberMeCheckbox = document.getElementById('remember-me');
+        const togglePasswordButton = document.getElementById('toggle-password');
+        const infoContainer = document.getElementById('info-container');
+
+        let isRegistering = false;
+
+        window.onload = () => {
+            const savedUsername = localStorage.getItem('username');
+            const savedPassword = localStorage.getItem('password');
+            if (savedUsername) usernameInput.value = savedUsername;
+            if (savedPassword) {
+                passwordInput.value = savedPassword;
+                rememberMeCheckbox.checked = true;
+            }
+        };
+
+        toggleButton.addEventListener('click', () => {
+            isRegistering = !isRegistering;
+            updateForm();
+        });
+        
+
+        function updateForm() {
+            formTitle.textContent = isRegistering ? 'Registrar' : 'Login';
+            submitButton.textContent = isRegistering ? 'Registrar' : 'Entrar';
+            toggleButton.textContent = isRegistering ? 'Voltar ao Login' : 'Registrar';
+            passwordInput.value = ''; // Limpar o campo de senha
+        }
+
+        authForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const username = usernameInput.value;
+            const password = passwordInput.value;
+
+            if (isRegistering) {
+                localStorage.setItem('username', username);
+                localStorage.setItem('password', password);
+                alert('Registrado com sucesso! Faça login agora.');
+                toggleButton.click();
+            } else {
+                const savedUsername = localStorage.getItem('username');
+                const savedPassword = localStorage.getItem('password');
+
+                if (username === savedUsername && password === savedPassword) {
+                    handleSuccessfulLogin();
+                } else {
+                    alert('Usuário ou senha incorretos!');
+                }
+            }
+        });
+
+        function handleSuccessfulLogin() {
+            if (rememberMeCheckbox.checked) {
+                localStorage.setItem('username', usernameInput.value);
+                localStorage.setItem('password', passwordInput.value);
+            } else {
+                localStorage.removeItem('username');
+                localStorage.removeItem('password');
+            }
+            displayWelcomeContent();
+            document.body.classList.add('logged-in');
+        }
+
+        function displayWelcomeContent() {
+            formContainer.style.display = 'none';
+            infoContainer.style.display = 'block';
+        }
+
+        document.getElementById('back-to-info').addEventListener('click', (e) => {
+            e.preventDefault();
+            formContainer.style.display = 'block';
+            infoContainer.style.display = 'none';
+        });
+
+        togglePasswordButton.addEventListener('click', () => {
+            const type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
+            togglePasswordButton.textContent = type === 'password' ? 'Ver senha' : 'Ocultar senha';
+            
+        });
+       
+   
+    </script>
+</body>
+</html>
+
+
